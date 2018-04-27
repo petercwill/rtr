@@ -392,9 +392,10 @@ def run_gridsearch(train, test):
     
     return best, best_params
 
-grid_train, grid_test = data_pipeline(orders, reviews, user_attr, .25, .25, .9, .1)
+grid_train, grid_test = data_pipeline(orders, reviews, user_attr, .1, .1, .9, .1)
 (best_err, best_params) = run_gridsearch(grid_train, grid_test)
-full_train, grid_test = data_pipeline(orders, reviews, user_attr, 1, 1, .9, .1)
+full_train, full_test = data_pipeline(orders, reviews, user_attr, 1, 1, .9, .1)
 model = MF(full_train, full_test, best_params[0], best_params[1],
-           best_params[2], best_params[3])
+           best_params[2], best_params[3], 30)
 model.train()
+model.save("model_from_grid")
